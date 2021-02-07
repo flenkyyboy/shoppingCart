@@ -1,0 +1,78 @@
+<section>
+    <div class="container">
+        <table class="table mt-5">
+            <thead>
+
+                <tr>
+
+                    <th scope="col">Item</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Quantity</th>
+
+                </tr>
+
+
+            </thead>
+            <tbody>
+                {{#each product}}
+
+                <tr>
+                    
+                    <td><img style="height: 70px; width: 70px;" src="/product-image/{{this.product._id}}.jpeg" alt=""></td>
+                    <td>{{this.product.name}}</td>
+                    <td>Rs.{{this.product.price}}</td>
+                
+                    <td>
+                        <button class="cart-item-count mr-3" onclick="changeQuantity('{{this._id}}','{{this.product._id}}',-1)">-</button>{{this.quantity}} <button class="cart-item-count ml-3" onclick="changeQuantity('{{this._id}}','{{this.product._id}}',1)">+</button>
+
+                    </td>
+                    <td>
+                        <button  class="btn btn-danger" onclick="deleteCart('{{this._id}}','{{this.product._id}}')">Remove</button>
+                    </td>
+
+                </tr>
+                {{/each}}
+
+            </tbody>
+
+        </table>
+
+<hr>
+<div class="float-right pr-5">
+<h3 class="float-left mr-5 ">Total:RS. <span id="total">{{totalAmount}}</span></h3>
+<a href="/place-order" class="mt-5  btn btn-success" style="100%">PLACE ORDER</a>
+</div>
+
+    </div>
+</section>
+<script>
+    function changeQuantity(cartId,proId,count){
+        $.ajax({
+            url:'/change-product-quantity',
+            data:{
+                cart:cartId,
+                product:proId,
+                count:count
+            },
+            method:'post',
+            success:(response)=>{
+                alert(response)
+            }
+        })
+    }
+
+    function deleteCart(cartId,proId){
+        $.ajax({
+            url:'/delete-cart',
+            data:{
+                cart:cartId,
+                product:proId
+            },
+            method:'post',
+            success:(response)=>{
+                alert(response)
+            }
+        })
+    }
+</script>
